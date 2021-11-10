@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>{% block title %}{% endblock title %}</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">ACM NITT</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item ">
+          <a class="nav-link {% block homeactive %}{% endblock homeactive %} " aria-current="page" href="/">Home</a>
+        </li>
+        <li class="nav-item dropdown ">
+          <a class="nav-link dropdown-toggle {% block eventsactive %}{% endblock eventsactive %}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Events
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link {% block blogactive %}{% endblock blogactive %}" href="/blog">Blog</a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link {% block aboutactive %}{% endblock aboutactive %}" href="/about">About Us</a>
+        </li>
+         <li class="nav-item ">
+          <a class="nav-link {% block contactactive %}{% endblock contactactive %}" href="/contact">Contact Us</a>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-info" type="submit">Search</button>
+        {% if user.is_authenticated %}
+            <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" <a aria-haspopup="true" aria-expanded="false">
+            Logged in as {{request.user}}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" method="POST" href="/logout" >Logout</a>
+            </div>
+            </li>
+            </ul>
+        {% else %}
+        <button type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#LoginModal">
+        LogIn</button>
+        <button type="button" class="btn btn-warning mr-2" data-toggle="modal" data-target="#signupModal">
+        SignUp</button>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+</nav>
+
+ {% for message in messages%}
+  <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+    <strong>Message :</strong> {{message}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% endfor %}
+
+  <!-- Button  to trigger modal -->
+
+
+  <!--signup Modal -->
+  <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="signupModalTitle">signup here</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="/signup" method="POST">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" class="form-control" id="username" name="username" placeholder="choos a uniq username">
+            </div>
+            <div class="form-group">
+              <label for="fname">First Name</label>
+              <input type="text" class="form-control" id="fname" name="fname" placeholder="First Name">
+            </div>
+            <div class="form-group">
+              <label for="lname">Last Name</label>
+              <input type="text" class="form-control" id="lname" name="lname" placeholder="Last Name">
+            </div>
+            <div class="form-group">
+              <label for="email">Email address</label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
+            </div>
+            <div class="form-group">
+              <label for="pass1">Password</label>
+              <input type="password" class="form-control" id="pass1" name="pass1" placeholder="choose your password">
+            </div>
+            <div class="form-group">
+              <label for="pass2">Confirm Password</label>
+              <input type="password" class="form-control" id="pass2" name="pass2" placeholder="Enter Your Password Again">
+            </div>
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">SignUp</button>
+          </form>
+        </div>
+      <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+<!--Login Model-->
+<div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="LoginModalTitle">Login here</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action='/login' method='POST'>
+            <div class="form-group">
+              <label for="username">Email</label>
+              <input type="text" class="form-control" id="loginusername" name="loginusername" placeholder="choos a uniq username">
+            </div>
+            <div class="form-group">
+              <label for="pass">Password</label>
+              <input type="password" class="form-control" id="loginpassword" name="loginpassword" placeholder="Enter Your Password">
+            </div>
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">LogIn</button>
+          </form>
+        </div>
+      <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% block body %}
+  {% endblock body%}
+
+<!-- FOOTER -->
+  <footer class="container mt-3">
+    <p class="float-right"><a href="#">Back to top</a></p>
+    <p>&copy; 2021-2024 ACM_NITT.com &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+  </footer>
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>
