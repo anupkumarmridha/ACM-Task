@@ -18,9 +18,9 @@ from django.urls import path,include
 from django.conf.urls.static import static
 from acm_task import settings
 
-admin.site.site_header = "RKMV ONLINE E-LEARNING ADMIN"
-admin.site.site_title = "RKMV ONLINE E-LEARNING ADMIN PANEL"
-admin.site.index_title = "WELCOME RKMV ONLINE E-LEARNING ADMIN"
+admin.site.site_header = "ACM ADMIN"
+admin.site.site_title = "ACM ADMIN PANEL"
+admin.site.index_title = "WELCOME ACM ADMIN"
 
 urlpatterns = [
     path('admin/', admin.site.urls),
